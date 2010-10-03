@@ -53,10 +53,13 @@ public class SCPUserInfo implements UserInfo, UIKeyboardInteractive {
 	public String[] promptKeyboardInteractive(final String destination,
 		final String name, final String instruction, final String[] prompt,
 		final boolean[] echo) {
+		if (prompt.length != 1 || echo[0] != false || this.password == null) {
+			return null;
+		}
 		if (honorKeyboardInteractive) {
 			throw new HonorKeyboardInteractiveException();
 		}
-		return null;
+		return new String[] { this.password };
 	}
 
 }
