@@ -1,11 +1,12 @@
 package be.certipost.hudson.plugin;
 
+import com.jcraft.jsch.UIKeyboardInteractive;
 import com.jcraft.jsch.UserInfo;
 import java.util.logging.Logger;;
 
  
 
-public class SCPUserInfo implements UserInfo {
+public class SCPUserInfo implements UserInfo, UIKeyboardInteractive {
 
 	public static final Logger LOGGER = Logger.getLogger(SCPUserInfo.class.getName());
 	
@@ -40,6 +41,12 @@ public class SCPUserInfo implements UserInfo {
 
 	public void showMessage(String arg0) {
 		LOGGER.info(arg0);
+	}
+
+	public String[] promptKeyboardInteractive(final String destination,
+		final String name, final String instruction, final String[] prompt,
+		final boolean[] echo) {
+		return null;
 	}
 
 }
