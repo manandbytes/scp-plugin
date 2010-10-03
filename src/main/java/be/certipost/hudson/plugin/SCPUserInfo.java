@@ -45,9 +45,17 @@ public class SCPUserInfo implements UserInfo, UIKeyboardInteractive {
 		LOGGER.info(arg0);
 	}
 
+	/**
+	 * @throws HonorKeyboardInteractiveException
+	 * @see com.jcraft.jsch.UIKeyboardInteractive#promptKeyboardInteractive(java.lang.String,
+	 *      java.lang.String, java.lang.String, java.lang.String[], boolean[])
+	 */
 	public String[] promptKeyboardInteractive(final String destination,
 		final String name, final String instruction, final String[] prompt,
 		final boolean[] echo) {
+		if (honorKeyboardInteractive) {
+			throw new HonorKeyboardInteractiveException();
+		}
 		return null;
 	}
 

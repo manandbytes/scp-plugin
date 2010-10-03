@@ -224,6 +224,9 @@ public final class SCPRepositoryPublisher extends Notifier {
 		} catch (IOException e) {
 			e.printStackTrace(listener.error("Failed to upload files"));
 			build.setResult(Result.UNSTABLE);
+		} catch (HonorKeyboardInteractiveException e) {
+			e.printStackTrace(listener.error(e.getMessage()));
+			build.setResult(Result.UNSTABLE);
 		} catch (JSchException e) {
 			e.printStackTrace(listener.error("Failed to upload files"));
 			build.setResult(Result.UNSTABLE);
@@ -337,6 +340,9 @@ public final class SCPRepositoryPublisher extends Notifier {
 					throw new IOException("Can't connect to server");
 				}
 			} catch (IOException e) {
+				LOGGER.log(Level.SEVERE, e.getMessage());
+				return FormValidation.error(e.getMessage());
+			} catch (HonorKeyboardInteractiveException e) {
 				LOGGER.log(Level.SEVERE, e.getMessage());
 				return FormValidation.error(e.getMessage());
 			}
