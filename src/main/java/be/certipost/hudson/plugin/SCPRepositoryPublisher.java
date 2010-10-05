@@ -326,9 +326,11 @@ public final class SCPRepositoryPublisher extends Notifier {
 			if (hostname == null) {// hosts is not entered yet
 				return FormValidation.ok();
 			}
+			final boolean honorKeyboardInteractive = Boolean.parseBoolean(request
+					.getParameter("honorKeyboardInteractive"));
 			SCPSite site = new SCPSite(hostname, request.getParameter("port"),
 					request.getParameter("user"), request.getParameter("pass"),
-					request.getParameter("keyfile"));
+					honorKeyboardInteractive, request.getParameter("keyfile"));
 			try {
 				try {
 					Session session = site.createSession(new PrintStream(

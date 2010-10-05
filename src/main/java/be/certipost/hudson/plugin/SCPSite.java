@@ -59,7 +59,7 @@ public class SCPSite {
 	}
 
 	public SCPSite(String hostname, String port, String username,
-			String password) {
+			final boolean isHonorKeyboardInteractive, String password) {
 		this.hostname = hostname;
 		try {
 			this.port = Integer.parseInt(port);
@@ -68,11 +68,13 @@ public class SCPSite {
 		}
 		this.username = username;
 		this.password = password;
+		this.honorKeyboardInteractive = isHonorKeyboardInteractive;
 	}
 
 	public SCPSite(String hostname, String port, String username,
-			String passphrase, String keyfile) {
-		this(hostname, port, username, passphrase);
+			String passphrase, final boolean honorKeyboardInteractive,
+			String keyfile) {
+		this(hostname, port, username, honorKeyboardInteractive, passphrase);
 
 		this.keyfile = keyfile;
 	}
