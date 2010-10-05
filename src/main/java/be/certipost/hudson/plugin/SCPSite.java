@@ -16,6 +16,7 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import org.apache.commons.lang.StringUtils;
+import org.kohsuke.stapler.DataBoundConstructor;
 
 import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.JSch;
@@ -37,6 +38,7 @@ public class SCPSite {
 	String password;
 	String keyfile;
 	String rootRepositoryPath;
+	public boolean honorKeyboardInteractive = true;
 
 	public static final Logger LOGGER = Logger.getLogger(SCPSite.class
 			.getName());
@@ -45,13 +47,15 @@ public class SCPSite {
 
 	}
 
+	@DataBoundConstructor
 	public SCPSite(String hostname, int port, String username, String password,
-			String rootRepositoryPath) {
+			String rootRepositoryPath, final boolean honorKeyboardInteractive) {
 		this.hostname = hostname;
 		this.port = port;
 		this.username = username;
 		this.password = password;
 		this.rootRepositoryPath = rootRepositoryPath.trim();
+		this.honorKeyboardInteractive = honorKeyboardInteractive;
 	}
 
 	public SCPSite(String hostname, String port, String username,
@@ -143,7 +147,7 @@ public class SCPSite {
 			session.setPassword(password);
 		}
 
-		UserInfo ui = new SCPUserInfo(password);
+		UserInfo ui = new SCPUserInfo(password, honorKeyboardInteractive);
 		session.setUserInfo(ui);
 
 		java.util.Properties config = new java.util.Properties();

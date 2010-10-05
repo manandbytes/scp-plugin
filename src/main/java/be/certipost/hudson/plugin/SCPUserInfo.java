@@ -12,11 +12,13 @@ public class SCPUserInfo implements UserInfo, UIKeyboardInteractive {
 	
 	String password;
 	String passphrase;
+
+	final private boolean honorKeyboardInteractive;
 	
-	public SCPUserInfo(String password){
+	public SCPUserInfo(String password, final boolean isHonorKeyboardInteractive) {
 		this.password=password;
 		this.passphrase=password;
-		
+		this.honorKeyboardInteractive = isHonorKeyboardInteractive;
 	}
 		
 	public String getPassphrase() {
