@@ -11,7 +11,7 @@
           <f:entry title="Port" help="/plugin/scp/help-port.html">
             <f:textbox name="scp.port" value="${site.port}"/>
           </f:entry>
-          <f:entry title="Honor 'keyboard-interactive'" field="honorKeyboardInteractive">
+          <f:entry title="Honor 'keyboard-interactive'" field="honorKeyboardInteractive" help="/plugin/scp/help-keyboard-interactive.html">
             <f:checkbox name="scp.honorKeyboardInteractive" default="true" checked="${site.honorKeyboardInteractive}"/>
           </f:entry>
           <f:entry title="Root Repository Path" help="/plugin/scp/help-rootpath.html">
