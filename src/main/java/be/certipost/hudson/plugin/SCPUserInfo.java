@@ -13,12 +13,12 @@ public class SCPUserInfo implements UserInfo, UIKeyboardInteractive {
 	String password;
 	String passphrase;
 
-	final private boolean honorKeyboardInteractive;
+	final private boolean forceNonInteractiveLogin;
 	
-	public SCPUserInfo(String password, final boolean isHonorKeyboardInteractive) {
+	public SCPUserInfo(String password, final boolean isForceNonInteractiveLogin) {
 		this.password=password;
 		this.passphrase=password;
-		this.honorKeyboardInteractive = isHonorKeyboardInteractive;
+		this.forceNonInteractiveLogin = isForceNonInteractiveLogin;
 	}
 		
 	public String getPassphrase() {
@@ -56,7 +56,7 @@ public class SCPUserInfo implements UserInfo, UIKeyboardInteractive {
 		if (prompt.length != 1 || echo[0] != false || this.password == null) {
 			return null;
 		}
-		if (honorKeyboardInteractive) {
+		if (!forceNonInteractiveLogin) {
 			throw new HonorKeyboardInteractiveException();
 		}
 		return new String[] { this.password };

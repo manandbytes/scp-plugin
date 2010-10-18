@@ -327,7 +327,7 @@ public final class SCPRepositoryPublisher extends Notifier {
 				return FormValidation.ok();
 			}
 			final boolean honorKeyboardInteractive = Boolean.parseBoolean(request
-					.getParameter("honorKeyboardInteractive"));
+					.getParameter("forceNonInteractiveLogin"));
 			SCPSite site = new SCPSite(hostname, request.getParameter("port"),
 					request.getParameter("user"), request.getParameter("pass"),
 					honorKeyboardInteractive, request.getParameter("keyfile"));

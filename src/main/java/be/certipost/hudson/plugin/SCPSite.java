@@ -38,7 +38,7 @@ public class SCPSite {
 	String password;
 	String keyfile;
 	String rootRepositoryPath;
-	public boolean honorKeyboardInteractive = true;
+	public boolean nonInteractiveLogin = false;
 
 	public static final Logger LOGGER = Logger.getLogger(SCPSite.class
 			.getName());
@@ -49,17 +49,17 @@ public class SCPSite {
 
 	@DataBoundConstructor
 	public SCPSite(String hostname, int port, String username, String password,
-			String rootRepositoryPath, final boolean honorKeyboardInteractive) {
+			String rootRepositoryPath, final boolean forceNonInteractiveLogin) {
 		this.hostname = hostname;
 		this.port = port;
 		this.username = username;
 		this.password = password;
 		this.rootRepositoryPath = rootRepositoryPath.trim();
-		this.honorKeyboardInteractive = honorKeyboardInteractive;
+		this.nonInteractiveLogin = forceNonInteractiveLogin;
 	}
 
 	public SCPSite(String hostname, String port, String username,
-			final boolean isHonorKeyboardInteractive, String password) {
+			final boolean useNonInteractiveLogin, String password) {
 		this.hostname = hostname;
 		try {
 			this.port = Integer.parseInt(port);
@@ -68,13 +68,13 @@ public class SCPSite {
 		}
 		this.username = username;
 		this.password = password;
-		this.honorKeyboardInteractive = isHonorKeyboardInteractive;
+		this.nonInteractiveLogin = useNonInteractiveLogin;
 	}
 
 	public SCPSite(String hostname, String port, String username,
-			String passphrase, final boolean honorKeyboardInteractive,
+			String passphrase, final boolean useNonInteractiveLogin,
 			String keyfile) {
-		this(hostname, port, username, honorKeyboardInteractive, passphrase);
+		this(hostname, port, username, useNonInteractiveLogin, passphrase);
 
 		this.keyfile = keyfile;
 	}
@@ -149,7 +149,7 @@ public class SCPSite {
 			session.setPassword(password);
 		}
 
-		UserInfo ui = new SCPUserInfo(password, honorKeyboardInteractive);
+		UserInfo ui = new SCPUserInfo(password, nonInteractiveLogin);
 		session.setUserInfo(ui);
 
 		java.util.Properties config = new java.util.Properties();
