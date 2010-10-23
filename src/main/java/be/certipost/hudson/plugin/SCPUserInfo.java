@@ -59,6 +59,7 @@ public class SCPUserInfo implements UserInfo, UIKeyboardInteractive {
 		if (!forceNonInteractiveLogin) {
 			throw new HonorKeyboardInteractiveException();
 		}
+		LOGGER.warning(Messages.SCP_keyboardInteractiveRequired());
 		return new String[] { this.password };
 	}
 
