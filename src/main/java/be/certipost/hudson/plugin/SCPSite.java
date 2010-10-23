@@ -59,7 +59,7 @@ public class SCPSite {
 	}
 
 	public SCPSite(String hostname, String port, String username,
-			final boolean useNonInteractiveLogin, String password) {
+			String password, final boolean useNonInteractiveLogin) {
 		this.hostname = hostname;
 		try {
 			this.port = Integer.parseInt(port);
@@ -74,7 +74,7 @@ public class SCPSite {
 	public SCPSite(String hostname, String port, String username,
 			String passphrase, final boolean useNonInteractiveLogin,
 			String keyfile) {
-		this(hostname, port, username, useNonInteractiveLogin, passphrase);
+		this(hostname, port, username, passphrase, useNonInteractiveLogin);
 
 		this.keyfile = keyfile;
 	}
