@@ -14,6 +14,8 @@ public class SCPUserInfo implements UserInfo, UIKeyboardInteractive {
 	String passphrase;
 
 	final private boolean forceNonInteractiveLogin;
+
+	private boolean nonInteractiveUsed = false;
 	
 	public SCPUserInfo(String password, final boolean isForceNonInteractiveLogin) {
 		this.password=password;
@@ -60,7 +62,17 @@ public class SCPUserInfo implements UserInfo, UIKeyboardInteractive {
 			throw new HonorKeyboardInteractiveException();
 		}
 		LOGGER.warning(Messages.SCP_keyboardInteractiveRequired());
+		this.nonInteractiveUsed = true;
 		return new String[] { this.password };
+	}
+
+	/**
+	 * @return <code>true</code> if server requested
+	 *         <code>keyboard-interactive</code> but non-interactive login was
+	 *         used
+	 */
+	public boolean isNonInteractiveUsed() {
+		return nonInteractiveUsed;
 	}
 
 }

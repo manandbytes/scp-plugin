@@ -361,7 +361,13 @@ public final class SCPRepositoryPublisher extends Notifier {
 		this.siteName = siteName;
 	};
 
-	protected void log(final PrintStream logger, final String message) {
+	/**
+	 * Write a message to job's log
+	 * 
+	 * @param logger
+	 * @param message
+	 */
+	protected static void log(final PrintStream logger, final String message) {
 		logger.println(StringUtils.defaultString(DESCRIPTOR.getShortName())
 				+ message);
 	}

@@ -24,7 +24,6 @@ import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
 import com.jcraft.jsch.SftpATTRS;
 import com.jcraft.jsch.SftpException;
-import com.jcraft.jsch.UserInfo;
 
 /**
  * 
@@ -149,13 +148,16 @@ public class SCPSite {
 			session.setPassword(password);
 		}
 
-		UserInfo ui = new SCPUserInfo(password, nonInteractiveLogin);
+		final SCPUserInfo ui = new SCPUserInfo(password, nonInteractiveLogin);
 		session.setUserInfo(ui);
 
 		java.util.Properties config = new java.util.Properties();
 		config.put("StrictHostKeyChecking", "no");
 		session.setConfig(config);
 		session.connect();
+		if (ui.isNonInteractiveUsed()) {
+			SCPRepositoryPublisher.log(logger, Messages.SCP_keyboardInteractiveRequired());
+		}
 
 		return session;
 
