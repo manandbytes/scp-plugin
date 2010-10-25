@@ -61,9 +61,17 @@ public class SCPUserInfo implements UserInfo, UIKeyboardInteractive {
 		if (!forceNonInteractiveLogin) {
 			throw new HonorKeyboardInteractiveException();
 		}
+		reportNonInteractiveLoginUsage();
+		return new String[] { this.password };
+	}
+
+	/**
+	 * Reports the fact that non-interactive login was used. Result is available
+	 * to caller through {@link #isNonInteractiveUsed()}
+	 */
+	private void reportNonInteractiveLoginUsage() {
 		LOGGER.warning(Messages.SCP_keyboardInteractiveRequired());
 		this.nonInteractiveUsed = true;
-		return new String[] { this.password };
 	}
 
 	/**
