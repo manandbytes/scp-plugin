@@ -14,10 +14,13 @@
           <f:entry title="${%Root Repository Path}" help="/plugin/scp/help-rootpath.html">
             <f:textbox name="scp.rootRepositoryPath" value="${site.rootRepositoryPath}"/>
           </f:entry>
+          <f:entry title="Don't honor 'keyboard-interactive'" field="forceNonInteractiveLogin" help="/plugin/scp/help-keyboard-interactive.html">
+            <f:checkbox name="scp.forceNonInteractiveLogin" default="false" checked="${site.nonInteractiveLogin}"/>
+          </f:entry>
           <f:entry title="${%User Name}" help="/plugin/scp/help-login.html">
             <f:textbox name="scp.username" value="${site.username}"
 				checkMethod="post"
-				checkUrl="'${rootURL}/publisher/SCPRepositoryPublisher/loginCheck?hostname='+escape(Form.findMatchingInput(this,'scp.hostname').value)+'&amp;port='+escape(Form.findMatchingInput(this,'scp.port').value)+'&amp;user='+escape(this.value)+'&amp;pass='+escape(Form.findMatchingInput(this,'scp.password').value)+'&amp;keyfile='+escape(Form.findMatchingInput(this,'scp.keyfile').value)"
+				checkUrl="'${rootURL}/publisher/SCPRepositoryPublisher/loginCheck?hostname='+escape(Form.findMatchingInput(this,'scp.hostname').value)+'&amp;port='+escape(Form.findMatchingInput(this,'scp.port').value)+'&amp;user='+escape(this.value)+'&amp;pass='+escape(Form.findMatchingInput(this,'scp.password').value)+'&amp;forceNonInteractiveLogin='+escape(Form.findMatchingInput(this,'scp.forceNonInteractiveLogin').checked)+'&amp;keyfile='+escape(Form.findMatchingInput(this,'scp.keyfile').value)"
 			/>
           </f:entry>
           <f:entry title="${%Password/Passphrase}" help="/plugin/scp/help-password.html">

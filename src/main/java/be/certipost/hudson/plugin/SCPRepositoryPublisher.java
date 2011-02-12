@@ -222,6 +222,9 @@ public final class SCPRepositoryPublisher extends Notifier {
 		} catch (IOException e) {
 			e.printStackTrace(listener.error("Failed to upload files"));
 			build.setResult(Result.UNSTABLE);
+		} catch (HonorKeyboardInteractiveException e) {
+			e.printStackTrace(listener.error(e.getMessage()));
+			build.setResult(Result.UNSTABLE);
 		} catch (JSchException e) {
 			e.printStackTrace(listener.error("Failed to upload files"));
 			build.setResult(Result.UNSTABLE);
@@ -317,9 +320,11 @@ public final class SCPRepositoryPublisher extends Notifier {
 			if (hostname == null) {// hosts is not entered yet
 				return FormValidation.ok();
 			}
+			final boolean honorKeyboardInteractive = Boolean.parseBoolean(request
+					.getParameter("forceNonInteractiveLogin"));
 			SCPSite site = new SCPSite(hostname, request.getParameter("port"),
 					request.getParameter("user"), request.getParameter("pass"),
-					request.getParameter("keyfile"));
+					honorKeyboardInteractive, request.getParameter("keyfile"));
 			try {
 				try {
 					Session session = site.createSession(new PrintStream(
@@ -331,6 +336,9 @@ public final class SCPRepositoryPublisher extends Notifier {
 					throw new IOException(Messages.SCPRepositoryPublisher_NotConnect());
 				}
 			} catch (IOException e) {
+				LOGGER.log(Level.SEVERE, e.getMessage());
+				return FormValidation.error(e.getMessage());
+			} catch (HonorKeyboardInteractiveException e) {
 				LOGGER.log(Level.SEVERE, e.getMessage());
 				return FormValidation.error(e.getMessage());
 			}
@@ -347,7 +355,13 @@ public final class SCPRepositoryPublisher extends Notifier {
 		this.siteName = siteName;
 	};
 
-	protected void log(final PrintStream logger, final String message) {
+	/**
+	 * Write a message to job's log
+	 * 
+	 * @param logger
+	 * @param message
+	 */
+	protected static void log(final PrintStream logger, final String message) {
 		logger.println(StringUtils.defaultString(DESCRIPTOR.getShortName())
 				+ message);
 	}

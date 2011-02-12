@@ -16,6 +16,7 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import org.apache.commons.lang.StringUtils;
+import org.kohsuke.stapler.DataBoundConstructor;
 
 import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.JSch;
@@ -38,6 +39,7 @@ public class SCPSite {
 	String password;
 	String keyfile;
 	String rootRepositoryPath;
+	public boolean nonInteractiveLogin = false;
 
 	public static final Logger LOGGER = Logger.getLogger(SCPSite.class
 			.getName());
@@ -46,17 +48,19 @@ public class SCPSite {
 
 	}
 
+	@DataBoundConstructor
 	public SCPSite(String hostname, int port, String username, String password,
-			String rootRepositoryPath) {
+			String rootRepositoryPath, final boolean forceNonInteractiveLogin) {
 		this.hostname = hostname;
 		this.port = port;
 		this.username = username;
 		this.password = password;
 		this.rootRepositoryPath = rootRepositoryPath.trim();
+		this.nonInteractiveLogin = forceNonInteractiveLogin;
 	}
 
 	public SCPSite(String hostname, String port, String username,
-			String password) {
+			String password, final boolean useNonInteractiveLogin) {
 		this.hostname = hostname;
 		try {
 			this.port = Integer.parseInt(port);
@@ -65,11 +69,13 @@ public class SCPSite {
 		}
 		this.username = username;
 		this.password = password;
+		this.nonInteractiveLogin = useNonInteractiveLogin;
 	}
 
 	public SCPSite(String hostname, String port, String username,
-			String passphrase, String keyfile) {
-		this(hostname, port, username, passphrase);
+			String passphrase, final boolean useNonInteractiveLogin,
+			String keyfile) {
+		this(hostname, port, username, passphrase, useNonInteractiveLogin);
 
 		this.keyfile = keyfile;
 	}
@@ -144,13 +150,16 @@ public class SCPSite {
 			session.setPassword(password);
 		}
 
-		UserInfo ui = new SCPUserInfo(password);
+		final SCPUserInfo ui = new SCPUserInfo(password, nonInteractiveLogin);
 		session.setUserInfo(ui);
 
 		java.util.Properties config = new java.util.Properties();
 		config.put("StrictHostKeyChecking", "no");
 		session.setConfig(config);
 		session.connect();
+		if (ui.isNonInteractiveUsed()) {
+			SCPRepositoryPublisher.log(logger, Messages.SCPRepositoryPublisher_keyboardInteractiveRequired());
+		}
 
 		return session;
 

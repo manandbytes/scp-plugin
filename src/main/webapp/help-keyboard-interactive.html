@@ -1,0 +1,5 @@
+<div>SSH server may be configured to require user's password to be entered interactively (eg., from a keyboard) and SCP plugin wouldn't provide a password to SSH server in such case.
+<p>This option forces non-interactive login to be used even if SSH server asked for interactive login explicitly. Use it if when loging in your SSH server with <code>ssh -v</code> gives you</p>
+<pre><code>debug1: Authentications that can continue: publickey,keyboard-interactive</code></pre>
+<p>without mentioning <code>password</code> authentication method.</p>
+</div>
